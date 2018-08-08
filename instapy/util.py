@@ -54,15 +54,15 @@ def validate_username(browser,
     if username == own_username:
         return False, \
                 "---> Username '{}' is yours!  ~skipping user\n".format(own_username)
-        
+
     if username in ignore_users:
         return False, \
                 "---> {} is in ignore_users list  ~skipping user\n".format(username)
-                
+
     if username in blacklist:
         return False, \
                 "---> {} is in blacklist  ~skipping user\n".format(username)
-    
+
     """Checks the potential of target user by relationship status in order to delimit actions within the desired boundary"""
     if potency_ratio or delimit_by_numbers and (max_followers or max_following or min_followers or min_following):
 
@@ -194,7 +194,7 @@ def get_active_users(browser, username, posts, boundary, logger):
     """Returns a list with usernames who liked the latest n posts"""
 
     user_link = 'https://www.instagram.com/{}/'.format(username)
-    
+
     #Check URL of the webpage, if it already is user's profile page, then do not navigate to it again
     web_adress_navigator(browser, user_link)
 
@@ -459,13 +459,14 @@ def username_url_to_username(username_url):
     a = username_url.replace ("https://www.instagram.com/","")
     username = a.split ('/')
     return username[0]
-                                           
+
 def get_number_of_posts(browser):
     """Get the number of posts from the profile screen"""
-    num_of_posts_txt = browser.find_element_by_xpath("//section/main/article/header/section/ul/li[1]/span/span").text
+    #num_of_posts_txt = browser.find_element_by_xpath("//section/main/article/header/section/ul/li[1]/span/span").text
+    num_of_posts_txt = browser.find_element_by_xpath("//section/main/div/header/section/ul/li[1]/span/span").text
     num_of_posts_txt = num_of_posts_txt.replace(" ", "")
     num_of_posts_txt = num_of_posts_txt.replace(",", "")
-    num_of_posts = int(num_of_posts_txt)   
+    num_of_posts = int(num_of_posts_txt)
     return num_of_posts
 
 
@@ -520,7 +521,7 @@ def get_relationship_counts(browser, username, logger):
                 except NoSuchElementException:
                     logger.error("\nError occured during getting the following count of '{}'\n".format(username))
                     following_count = None
-    
+
     return followers_count, following_count
 
 
@@ -535,10 +536,9 @@ def web_adress_navigator(browser, link):
         except WebDriverException:
             raise
             current_url = None
-    
+
     if current_url is None or current_url != link:
         browser.get(link)
         # update server calls
         update_activity()
         sleep(2)
-
