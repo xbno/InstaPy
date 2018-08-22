@@ -89,7 +89,7 @@ def login_user(browser,
                username,
                password,
                logfolder,
-               switch_language=True,
+               switch_language=False,
                bypass_suspicious_attempt=False):
     """Logins the user with the given username and password"""
     assert username, 'Username not provided'
@@ -112,7 +112,7 @@ def login_user(browser,
 
     # include time.sleep(1) to prevent getting stuck on google.com
     time.sleep(1)
-    
+
     browser.get('https://www.instagram.com')
 
     # Cookie has been loaded, user should be logged in. Ensurue this is true

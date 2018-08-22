@@ -47,8 +47,8 @@ from .unfollow_util import load_follow_restriction
 from .unfollow_util import dump_follow_restriction
 from .unfollow_util import set_automated_followed_pool
 from .feed_util import get_like_on_feed
-from .commenters_util import extract_post_info
-from .commenters_util import extract_information
+from .commenters_util import extract_record_post_info #extract_post_info
+from .commenters_util import extract_record_information #extract_information
 from .commenters_util import users_liked
 from .commenters_util import get_photo_urls_from_profile
 
@@ -528,6 +528,11 @@ class InstaPy:
 
         return self
 
+    def my_shit(self):
+        print(self.browser.find_elements_by_tag_name('main'))
+        prev_divs = self.browser.find_elements_by_tag_name('main')
+        print([div.find_elements_by_tag_name('a') for div in prev_divs])
+        return self
 
     def follow_commenters(self, usernames, amount=10, daysold=365, max_pic=50, sleep_delay=600, interact=False):
         """ Follows users' commenters """
@@ -542,7 +547,7 @@ class InstaPy:
 
         for username in usernames:
             self.logger.info("Following commenters of '{}' from pictures in last {} days...\nScrapping wall..".format(username, daysold))
-            commenters = extract_information(self.browser, username, daysold, max_pic)
+            commenters = extract_record_information(self.browser, username, daysold, max_pic)
 
             if len(commenters)>0:
                 self.logger.info("Going to follow top {} users.\n".format(amount))
